@@ -1,25 +1,65 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react'
+import './Wordcounte.css'
 
-function App() {
+const App = () => {
+  const [text, setText] = useState('');
+  const [characterCount, setCharacterCount] = useState(0);
+  const [sentenceCount, setSentenceCount] = useState(0);
+
+  const handleTestChange = (e) => {
+    const inputText = e.target.value
+    setText(inputText);
+
+    // calculate character
+    const characters = inputText.replace(/\s+/g, '');
+    setCharacterCount(characters.length);
+
+    // calculate sentence
+    const sentences = inputText.trim().split(/[.!?](\s|$)/).filter((sentence) => sentence.trim().length > 0);
+    setSentenceCount(sentences.length);
+  }
+
+  const resetCounter = () => {
+    setText("");
+    setCharacterCount(0);
+    setSentenceCount(0);
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='Container'>
+      <div className='Container_middle'>
+        <div className='right'>
+          <textarea className='text-input' value={text} onChange={handleTestChange} rows="6"
+            placeholder='type or paste your text here...'></textarea>
+          <div className='button_div'>
+            <button className='button-65' onClick={resetCounter}>Delete</button>
+          </div>
+        </div>
+        <div className='left'>
+          <div className='Container_middle_para'>
+            <h1>Result</h1>
+          </div>
+          <div className='flex-container'>
+            {/* word count */}
+            <div>
+              <p>
+                <strong>Characters:</strong>
+                {characterCount}
+              </p>
+            </div>
+
+            {/* Sentence count */}
+            <div>
+              <p>
+                <strong>Sentence:</strong>
+                {sentenceCount}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
